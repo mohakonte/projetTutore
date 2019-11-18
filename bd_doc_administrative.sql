@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost
--- Généré le :  lun. 11 nov. 2019 à 20:05
+-- Généré le :  mar. 19 nov. 2019 à 00:55
 -- Version du serveur :  10.3.16-MariaDB
 -- Version de PHP :  7.1.30
 
@@ -33,7 +33,12 @@ CREATE TABLE `admin` (
   `login` varchar(45) NOT NULL,
   `password` varchar(45) NOT NULL,
   `privilege` varchar(45) NOT NULL,
-  `fk_idpersonne` int(11) NOT NULL,
+  `prenom` varchar(45) DEFAULT NULL,
+  `nom` varchar(45) DEFAULT NULL,
+  `age` varchar(45) DEFAULT NULL,
+  `adresse` varchar(45) DEFAULT NULL,
+  `email` varchar(45) DEFAULT NULL,
+  `telephone` varchar(45) DEFAULT NULL,
   `fk_idetat_civil_admin` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -91,6 +96,13 @@ CREATE TABLE `date_demande` (
   `annee` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Déchargement des données de la table `date_demande`
+--
+
+INSERT INTO `date_demande` (`iddate_demande`, `date_complet`, `jour`, `mois`, `annee`) VALUES
+(1, '2019-11-19', 'mardi', 'Novembre', '2019');
+
 -- --------------------------------------------------------
 
 --
@@ -103,9 +115,39 @@ CREATE TABLE `demande` (
   `fk_idpaiement` int(11) NOT NULL,
   `fk_iddate` int(11) NOT NULL,
   `fk_idcategory_demande` int(11) NOT NULL,
-  `fk_idpersonne` int(11) NOT NULL,
+  `fk_iddemandeur` int(11) NOT NULL,
   `fk_iddocument` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=armscii8;
+
+--
+-- Déchargement des données de la table `demande`
+--
+
+INSERT INTO `demande` (`iddemande`, `nombre_copie`, `fk_idpaiement`, `fk_iddate`, `fk_idcategory_demande`, `fk_iddemandeur`, `fk_iddocument`) VALUES
+(1, 7, 1, 1, 1, 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `demandeur`
+--
+
+CREATE TABLE `demandeur` (
+  `iddemandeur` int(11) NOT NULL,
+  `prenom` varchar(100) NOT NULL,
+  `nom` varchar(100) NOT NULL,
+  `age` int(11) NOT NULL,
+  `telephone` varchar(45) NOT NULL,
+  `adresse` varchar(45) NOT NULL,
+  `email` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `demandeur`
+--
+
+INSERT INTO `demandeur` (`iddemandeur`, `prenom`, `nom`, `age`, `telephone`, `adresse`, `email`) VALUES
+(1, 'Mohamed Saidou', '782567965', 23, '782567965', 'Dakar', 'mohakonte2011@hotmail.com');
 
 -- --------------------------------------------------------
 
@@ -144,9 +186,9 @@ CREATE TABLE `etat_civil` (
 --
 
 INSERT INTO `etat_civil` (`idetat_civil`, `libelle_etat_civil`) VALUES
-(1, 'Dakar'),
-(2, 'Pikine'),
-(3, 'Guediawaye');
+(1, 'dakar'),
+(2, 'pikine'),
+(3, 'guediawaye');
 
 -- --------------------------------------------------------
 
@@ -160,21 +202,12 @@ CREATE TABLE `paiement` (
   `fk_idconfirmation_paiement` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
-
 --
--- Structure de la table `personne`
+-- Déchargement des données de la table `paiement`
 --
 
-CREATE TABLE `personne` (
-  `idpersonne` int(11) NOT NULL,
-  `prenom` varchar(100) NOT NULL,
-  `nom` varchar(100) NOT NULL,
-  `age` int(11) NOT NULL,
-  `telephone` varchar(45) NOT NULL,
-  `adresse` varchar(45) NOT NULL,
-  `email` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+INSERT INTO `paiement` (`idpaiement`, `fk_idreference`, `fk_idconfirmation_paiement`) VALUES
+(1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -192,8 +225,7 @@ CREATE TABLE `reference` (
 --
 
 INSERT INTO `reference` (`idreference`, `libelle_reference`) VALUES
-(1, 'Orange Monney'),
-(2, 'Wari');
+(1, 'Orange Monney');
 
 -- --------------------------------------------------------
 
@@ -203,17 +235,17 @@ INSERT INTO `reference` (`idreference`, `libelle_reference`) VALUES
 
 CREATE TABLE `type_document` (
   `idtype_document` int(11) NOT NULL,
-  `libelle_document` varchar(45) DEFAULT NULL
+  `libelle_type_document` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `type_document`
 --
 
-INSERT INTO `type_document` (`idtype_document`, `libelle_document`) VALUES
+INSERT INTO `type_document` (`idtype_document`, `libelle_type_document`) VALUES
 (1, 'extrait naissance'),
-(2, 'certificat mariage'),
-(3, 'certificat  deces');
+(2, 'certficat mariage'),
+(3, 'certificat deces');
 
 --
 -- Index pour les tables déchargées
@@ -223,8 +255,7 @@ INSERT INTO `type_document` (`idtype_document`, `libelle_document`) VALUES
 -- Index pour la table `admin`
 --
 ALTER TABLE `admin`
-  ADD PRIMARY KEY (`idadmin`,`fk_idpersonne`,`fk_idetat_civil_admin`),
-  ADD KEY `fk_admin_personne1_idx` (`fk_idpersonne`),
+  ADD PRIMARY KEY (`idadmin`,`fk_idetat_civil_admin`),
   ADD KEY `fk_admin_etat_civil1_idx` (`fk_idetat_civil_admin`);
 
 --
@@ -249,12 +280,18 @@ ALTER TABLE `date_demande`
 -- Index pour la table `demande`
 --
 ALTER TABLE `demande`
-  ADD PRIMARY KEY (`iddemande`,`fk_idpaiement`,`fk_iddate`,`fk_idcategory_demande`,`fk_idpersonne`,`fk_iddocument`),
+  ADD PRIMARY KEY (`iddemande`,`fk_idpaiement`,`fk_iddate`,`fk_idcategory_demande`,`fk_iddemandeur`,`fk_iddocument`),
   ADD KEY `fk_demande_paiement1_idx` (`fk_idpaiement`),
   ADD KEY `fk_demande_date1_idx` (`fk_iddate`),
   ADD KEY `fk_demande_category_demande1_idx` (`fk_idcategory_demande`),
-  ADD KEY `fk_demande_personne1_idx` (`fk_idpersonne`),
+  ADD KEY `fk_demande_personne1_idx` (`fk_iddemandeur`),
   ADD KEY `fk_demande_document1_idx` (`fk_iddocument`);
+
+--
+-- Index pour la table `demandeur`
+--
+ALTER TABLE `demandeur`
+  ADD PRIMARY KEY (`iddemandeur`);
 
 --
 -- Index pour la table `document`
@@ -277,12 +314,6 @@ ALTER TABLE `paiement`
   ADD PRIMARY KEY (`idpaiement`,`fk_idreference`,`fk_idconfirmation_paiement`),
   ADD KEY `fk_paiement_type_paiement1_idx` (`fk_idreference`),
   ADD KEY `fk_paiement_confirmation_paiement1_idx` (`fk_idconfirmation_paiement`);
-
---
--- Index pour la table `personne`
---
-ALTER TABLE `personne`
-  ADD PRIMARY KEY (`idpersonne`);
 
 --
 -- Index pour la table `reference`
@@ -322,13 +353,19 @@ ALTER TABLE `confirmation_paiement`
 -- AUTO_INCREMENT pour la table `date_demande`
 --
 ALTER TABLE `date_demande`
-  MODIFY `iddate_demande` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `iddate_demande` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `demande`
 --
 ALTER TABLE `demande`
-  MODIFY `iddemande` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `iddemande` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT pour la table `demandeur`
+--
+ALTER TABLE `demandeur`
+  MODIFY `iddemandeur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `document`
@@ -346,19 +383,13 @@ ALTER TABLE `etat_civil`
 -- AUTO_INCREMENT pour la table `paiement`
 --
 ALTER TABLE `paiement`
-  MODIFY `idpaiement` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT pour la table `personne`
---
-ALTER TABLE `personne`
-  MODIFY `idpersonne` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idpaiement` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `reference`
 --
 ALTER TABLE `reference`
-  MODIFY `idreference` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `idreference` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `type_document`
@@ -374,8 +405,7 @@ ALTER TABLE `type_document`
 -- Contraintes pour la table `admin`
 --
 ALTER TABLE `admin`
-  ADD CONSTRAINT `fk_admin_etat_civil1` FOREIGN KEY (`fk_idetat_civil_admin`) REFERENCES `etat_civil` (`idetat_civil`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_admin_personne1` FOREIGN KEY (`fk_idpersonne`) REFERENCES `personne` (`idpersonne`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_admin_etat_civil1` FOREIGN KEY (`fk_idetat_civil_admin`) REFERENCES `etat_civil` (`idetat_civil`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Contraintes pour la table `demande`
@@ -385,7 +415,7 @@ ALTER TABLE `demande`
   ADD CONSTRAINT `fk_demande_date1` FOREIGN KEY (`fk_iddate`) REFERENCES `date_demande` (`iddate_demande`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_demande_document1` FOREIGN KEY (`fk_iddocument`) REFERENCES `document` (`iddocument`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_demande_paiement1` FOREIGN KEY (`fk_idpaiement`) REFERENCES `paiement` (`idpaiement`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_demande_personne1` FOREIGN KEY (`fk_idpersonne`) REFERENCES `personne` (`idpersonne`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_demande_personne1` FOREIGN KEY (`fk_iddemandeur`) REFERENCES `demandeur` (`iddemandeur`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Contraintes pour la table `document`
