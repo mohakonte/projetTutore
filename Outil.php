@@ -10,8 +10,8 @@ class Outil {
         }   else if($jour == "Mon") {
             $jour = "lundi" ;
         }   else if($jour == "Tue") {
-            $jour == "mardi" ;
-        }   else if($jour == "Wen") {
+            $jour = "mardi" ;
+        }   else if($jour == "Wed") {
             $jour = "mercredi" ;   
         }   else if($jour == "Thu") {
             $jour = "jeudi" ;   
