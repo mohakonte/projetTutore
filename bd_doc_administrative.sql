@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost
--- Généré le :  mar. 19 nov. 2019 à 00:55
+-- Généré le :  mar. 19 nov. 2019 à 01:02
 -- Version du serveur :  10.3.16-MariaDB
 -- Version de PHP :  7.1.30
 
@@ -147,7 +147,7 @@ CREATE TABLE `demandeur` (
 --
 
 INSERT INTO `demandeur` (`iddemandeur`, `prenom`, `nom`, `age`, `telephone`, `adresse`, `email`) VALUES
-(1, 'Mohamed Saidou', '782567965', 23, '782567965', 'Dakar', 'mohakonte2011@hotmail.com');
+(1, 'Mohamed Saidou', 'konte', 23, '782567965', 'Dakar', 'mohakonte2011@hotmail.com');
 
 -- --------------------------------------------------------
 
