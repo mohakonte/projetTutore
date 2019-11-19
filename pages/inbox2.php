@@ -2,8 +2,8 @@
 require "../db.class.php" ;
 $DB = new DB() ;
 $requete_prepare_demande=$DB->prepare("SELECT *
-    FROM demande de ,personne pe,date_demande da,reference re,paiement pa,confirmation_paiement cp,type_document td ,document do,etat_civil ec,category_demande cd 
-    WHERE pe.idpersonne = de.fk_idpersonne
+    FROM demande de ,demandeur pe,date_demande da,reference re,paiement pa,confirmation_paiement cp,type_document td ,document do,etat_civil ec,category_demande cd 
+    WHERE pe.iddemandeur = de.fk_iddemandeur
     AND da.iddate_demande = de.fk_iddate
     AND pa.idpaiement = de.fk_idpaiement
     AND do.iddocument = de.fk_iddocument
@@ -328,7 +328,13 @@ foreach($terminers as $terminer) {
             <section class="panel">
               <header class="panel-heading wht-bg">
                 <h4 class="gen-case">
-                    <b>Extrait de naissance</b> 
+                    <b>Extrait de naissance</b> <?php if(isset($_GET['id'])) :?>
+                    <div class="row">
+                    <div class="alert alert-success"><b> Une nouvelle demande en cours de traitement a ete ajouter avec succes .</b>
+                  </div>
+                    <?php endif ?>
+                    
+                    
                     <form action="#" class="pull-right mail-src-position">
                       <div class="input-append">
                         <input type="text" class="form-control " placeholder="Numero demande">

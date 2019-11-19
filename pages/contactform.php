@@ -1,18 +1,18 @@
 <?php
-var_dump($_POST) ;
 if(isset($_POST["envoyer"])) {
   require "../db.class.php" ;
   $DB = new DB() ;
   $numero_demande = (int)$_POST['numero_demande'] ;
-  $requete_prepare_maj = $DB->prepare("UPDATE demande,paiement pa,date_demande dd,category_demande cd,personne pe,document do SET fk_idcategory_demande = 2
+  $requete_prepare_maj = $DB->prepare("UPDATE demande,paiement pa,date_demande dd,category_demande cd,demandeur pe,document do SET fk_idcategory_demande = 2
   WHERE demande.iddemande = $numero_demande
   AND demande.fk_idpaiement = pa.idpaiement
   AND demande.fk_iddate = dd.iddate_demande
   AND demande.fk_idcategory_demande = cd.idcategory_demande
-  AND demande.fk_idpersonne = pe.idpersonne
+  AND demande.fk_iddemandeur = pe.iddemandeur
   AND demande.fk_iddocument = do.iddocument ") ;
   $requete_prepare_maj->execute() ;
-    header("location:inbox2.php") ;
+  $new = 'en_cours' ;
+    header("location:inbox2.php?id=".$new) ;
 }
 ?>
 <!DOCTYPE html>
@@ -267,7 +267,7 @@ if(isset($_POST["envoyer"])) {
     <!--main content start-->
     <section id="main-content2">
       <section class="wrapper">
-        <h3><i class="fa fa-angle-right"></i> Detail de la demande N°<?=$numero_demande?> </h3>
+        <h3><i class="fa fa-angle-right"></i> Detail de la demande N°<?=$_POST['numero_demande']?> </h3>
         <!-- BASIC FORM ELELEMNTS -->
         <div class="row mt">
           <div class="col-lg-6 col-md-6 col-sm-6" >

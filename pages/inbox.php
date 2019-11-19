@@ -2,8 +2,8 @@
 require "../db.class.php" ;
 $DB = new DB() ;
 $requete_prepare_demande=$DB->prepare("SELECT *
-    FROM demande de ,personne pe,date_demande da,reference re,paiement pa,confirmation_paiement cp,type_document td ,document do,etat_civil ec,category_demande cd 
-    WHERE pe.idpersonne = de.fk_idpersonne
+    FROM demande de ,demandeur pe,date_demande da,reference re,paiement pa,confirmation_paiement cp,type_document td ,document do,etat_civil ec,category_demande cd 
+    WHERE pe.iddemandeur = de.fk_iddemandeur
     AND da.iddate_demande = de.fk_iddate
     AND pa.idpaiement = de.fk_idpaiement
     AND do.iddocument = de.fk_iddocument

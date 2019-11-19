@@ -171,7 +171,7 @@
                                                     
                                                     </tr>
                                                     <tr>
-                                                        <td> <?php if(strlen($_SESSION["numero_registre"])>4) {echo "CNI" ;} else{echo "Numero_registre de registre" ;}?></td>
+                                                        <td>Numero de registre</td>
                                                         <td><?=$_SESSION["numero_registre"]?></td>
                                                         
                                                     </tr>

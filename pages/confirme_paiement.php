@@ -24,8 +24,8 @@ if(isset($_POST["terminer"])) {
             $validation == true ;
             // ---------------------------------INSERTION DEDAMNDEUR--------------------------------------------
             //INSERTION
-            $requete_insert_personne=$DB->prepare("INSERT INTO personne(prenom,nom,age,telephone,adresse,email) VALUES(:prenom,:nom,:age,:telephone,:adresse,:email)") ;
-            $requete_insert_personne->execute(array(
+            $requete_insert_demandeur=$DB->prepare("INSERT INTO demandeur(prenom,nom,age,telephone,adresse,email) VALUES(:prenom,:nom,:age,:telephone,:adresse,:email)") ;
+            $requete_insert_demandeur->execute(array(
 
                 "prenom"=>$_SESSION["firstname"],
                 "nom"=>$_SESSION["lastname"],
@@ -35,12 +35,12 @@ if(isset($_POST["terminer"])) {
                 "email"=>$_SESSION["email"],
             )) ;
             // RECUPERATION DE ID
-            $requete_prepare_personne=$DB->prepare("SELECT MAX(idpersonne) as idpersonne FROM personne ") ;
-            $requete_prepare_personne->execute() ;
-            $personnes = $DB->fetchallobject($requete_prepare_personne) ;
-            foreach($personnes as $personne) {
-                $idpersonne = $personne->idpersonne ;
-            }
+            $requete_prepare_demandeur=$DB->prepare("SELECT MAX(iddemandeur) as iddemandeur FROM demandeur ") ;
+            $requete_prepare_demandeur->execute() ;
+            $demandeurs = $DB->fetchallobject($requete_prepare_demandeur) ;
+            foreach($demandeurs as $demandeur) {
+                $iddemandeur = $demandeur->iddemandeur ;
+            }$_SESSION["iddemandeur"] = $iddemandeur ;
             // ---------------------------------------INSERTION DATE------------------------------------------
             $jour = date("D") ;
             $jour = $Outil->convert_jour($jour) ;
@@ -130,11 +130,11 @@ if(isset($_POST["terminer"])) {
             // INSERTION DE LA DEMANDE
             $nombre_copie = $_SESSION["nombre_copie"] ;
             $category = "1" ;
-            $requete_insert_demande = $DB->prepare("INSERT INTO demande (fk_idpersonne,fk_iddate,fk_iddocument,fk_idpaiement,fk_idcategory_demande,nombre_copie)
-                VALUES (:fk_idpersonne,:fk_iddate,:fk_iddocument,:fk_idpaiement,:fk_idcategory_demande,:nombre_copie)
+            $requete_insert_demande = $DB->prepare("INSERT INTO demande (fk_iddemandeur,fk_iddate,fk_iddocument,fk_idpaiement,fk_idcategory_demande,nombre_copie)
+                VALUES (:fk_iddemandeur,:fk_iddate,:fk_iddocument,:fk_idpaiement,:fk_idcategory_demande,:nombre_copie)
                 ");
             $requete_insert_demande->execute(array(
-                'fk_idpersonne'=> $idpersonne,
+                'fk_iddemandeur'=> $iddemandeur,
                 'fk_iddate'=> $iddate_demande,
                 'fk_iddocument'=> $iddocument,
                 'fk_idpaiement'=> $idpaiement,
