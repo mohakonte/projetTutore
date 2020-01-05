@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost
--- Généré le :  mar. 19 nov. 2019 à 01:02
+-- Généré le :  Dim 05 jan. 2020 à 17:57
 -- Version du serveur :  10.3.16-MariaDB
 -- Version de PHP :  7.1.30
 
@@ -41,6 +41,17 @@ CREATE TABLE `admin` (
   `telephone` varchar(45) DEFAULT NULL,
   `fk_idetat_civil_admin` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `admin`
+--
+
+INSERT INTO `admin` (`idadmin`, `login`, `password`, `privilege`, `prenom`, `nom`, `age`, `adresse`, `email`, `telephone`, `fk_idetat_civil_admin`) VALUES
+(1, 'diatta@estim.sn', 'fc3707fa908df1e82e30ecbdae3d094804a8f87d', '1', 'Mr', 'Diatta', '49', 'Dakar', 'diatta@estim.sn', '22178123456789', 2),
+(2, 'moustapha@estim.sn', 'fc3707fa908df1e82e30ecbdae3d094804a8f87d', '2', 'Moustapha', 'MANGANE', '20', 'mous', 'moustapha@estim.sn', '772291683', 1),
+(4, 'babou@estim.sn', 'c34971ead9691468486e9e90676bca5f72282aa1', '1', 'El hadj Babou', 'Sane', '20', 'pikine', 'babousane@gmail.com', '781234578', 2),
+(5, 'moustapha@estim.sn', 'cadac49fcc6e9d4ada0c05df8fd06759f3fe4eb8', '1', 'Moustapha', 'MANGANE', '20', 'Dakar', 'moustaphamangane@hotmail.com', '781234578', 2),
+(6, 'moha@estim.sn', 'c2f6acd7eec4227d5c4308af68697692d9363049', '1', 'Mohamed Saidou', 'KONTE', '20', 'Keur Massar', 'mohakonte2011@hotmail.com', '781234578', 2);
 
 -- --------------------------------------------------------
 
@@ -80,7 +91,11 @@ CREATE TABLE `confirmation_paiement` (
 --
 
 INSERT INTO `confirmation_paiement` (`idconfirmation_paiement`, `numero_telephone`, `code_confirmation`, `valide`) VALUES
-(1, '782567965', '123456', 'TRUE');
+(1, '782567965', '123456', 'TRUE'),
+(2, '782032450', '123456', 'TRUE'),
+(3, '781234578', '456789', 'TRUE'),
+(4, '784561237', '4561237', 'TRUE'),
+(5, '781234578', '1234578', 'TRUE');
 
 -- --------------------------------------------------------
 
@@ -101,7 +116,11 @@ CREATE TABLE `date_demande` (
 --
 
 INSERT INTO `date_demande` (`iddate_demande`, `date_complet`, `jour`, `mois`, `annee`) VALUES
-(1, '2019-11-19', 'mardi', 'Novembre', '2019');
+(1, '2019-11-19', 'mardi', 'Novembre', '2019'),
+(2, '2019-12-07', 'samedi', 'Decembre', '2019'),
+(3, '2019-12-22', 'dimanche', 'Decembre', '2019'),
+(4, '2019-12-27', 'vendredi', 'Decembre', '2019'),
+(5, '2020-01-05', 'dimanche', 'Janvier', '2020');
 
 -- --------------------------------------------------------
 
@@ -124,7 +143,11 @@ CREATE TABLE `demande` (
 --
 
 INSERT INTO `demande` (`iddemande`, `nombre_copie`, `fk_idpaiement`, `fk_iddate`, `fk_idcategory_demande`, `fk_iddemandeur`, `fk_iddocument`) VALUES
-(1, 7, 1, 1, 1, 1, 1);
+(1, 7, 1, 1, 1, 1, 1),
+(2, 5, 2, 2, 1, 2, 2),
+(3, 7, 3, 3, 1, 3, 1),
+(4, 5, 5, 4, 3, 4, 3),
+(5, 2, 7, 5, 3, 5, 4);
 
 -- --------------------------------------------------------
 
@@ -147,7 +170,11 @@ CREATE TABLE `demandeur` (
 --
 
 INSERT INTO `demandeur` (`iddemandeur`, `prenom`, `nom`, `age`, `telephone`, `adresse`, `email`) VALUES
-(1, 'Mohamed Saidou', 'konte', 23, '782567965', 'Dakar', 'mohakonte2011@hotmail.com');
+(1, 'Mohamed Saidou', 'konte', 23, '782567965', 'Dakar', 'mohakonte2011@hotmail.com'),
+(2, 'el hadji babou', 'sane', 24, '782032450', 'Dakar', 'babousane@gmail.com'),
+(3, 'Mohamed Saidou', 'Konte', 57, '781234578', 'Dakar', 'moha@gmail.com'),
+(4, 'Ibrahima', 'Faye', 26, '784561237', 'parcelle', 'ibra@hotmail.com'),
+(5, 'Idrissa', 'Seck', 21, '781234578', 'Castor', 'idi@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -168,7 +195,10 @@ CREATE TABLE `document` (
 --
 
 INSERT INTO `document` (`iddocument`, `numero_registre`, `annee_enregistrement`, `fk_idtype_document`, `fk_idetat_civil_document`) VALUES
-(1, '2312', '1996', 1, 1);
+(1, '2312', '1996', 1, 1),
+(2, '4556', '1996', 2, 1),
+(3, '7889', '2007', 2, 2),
+(4, '4556', '2005', 3, 2);
 
 -- --------------------------------------------------------
 
@@ -207,7 +237,13 @@ CREATE TABLE `paiement` (
 --
 
 INSERT INTO `paiement` (`idpaiement`, `fk_idreference`, `fk_idconfirmation_paiement`) VALUES
-(1, 1, 1);
+(1, 1, 1),
+(2, 1, 2),
+(3, 1, 3),
+(4, 1, 4),
+(5, 1, 4),
+(6, 1, 5),
+(7, 1, 5);
 
 -- --------------------------------------------------------
 
@@ -244,7 +280,7 @@ CREATE TABLE `type_document` (
 
 INSERT INTO `type_document` (`idtype_document`, `libelle_type_document`) VALUES
 (1, 'extrait naissance'),
-(2, 'certficat mariage'),
+(2, 'certificat mariage'),
 (3, 'certificat deces');
 
 --
@@ -335,7 +371,7 @@ ALTER TABLE `type_document`
 -- AUTO_INCREMENT pour la table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `idadmin` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idadmin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT pour la table `category_demande`
@@ -347,31 +383,31 @@ ALTER TABLE `category_demande`
 -- AUTO_INCREMENT pour la table `confirmation_paiement`
 --
 ALTER TABLE `confirmation_paiement`
-  MODIFY `idconfirmation_paiement` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idconfirmation_paiement` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT pour la table `date_demande`
 --
 ALTER TABLE `date_demande`
-  MODIFY `iddate_demande` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `iddate_demande` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT pour la table `demande`
 --
 ALTER TABLE `demande`
-  MODIFY `iddemande` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `iddemande` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT pour la table `demandeur`
 --
 ALTER TABLE `demandeur`
-  MODIFY `iddemandeur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `iddemandeur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT pour la table `document`
 --
 ALTER TABLE `document`
-  MODIFY `iddocument` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `iddocument` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT pour la table `etat_civil`
@@ -383,7 +419,7 @@ ALTER TABLE `etat_civil`
 -- AUTO_INCREMENT pour la table `paiement`
 --
 ALTER TABLE `paiement`
-  MODIFY `idpaiement` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idpaiement` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT pour la table `reference`
