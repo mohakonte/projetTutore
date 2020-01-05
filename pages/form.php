@@ -51,11 +51,11 @@ $DB = new DB() ; ?>
                         <!-- <a href="#" class="dropdown-toggle" data-toggle="dropdown">More Pages <b class="caret"></b></a> -->
                         <ul class="dropdown-menu">
                             <li><a href="#sidebar-left.html">Left Sidebar</a></li>
-                            <li class="active"><a href="#sidebar-right.html">Right Sidebar</a></li>
+                            <li class="active"><a href="#sidebar-right.html">Right Sidebar</a></li> 
                         </ul>
                     </li>
                     <li><a href="contact.php">Contact</a></li>
-                    <li><a class="btn" href="form.php">Demander un document</a></li>
+                    <li><a class="btn" href="form.php">Demander un document</a></li> 
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
@@ -77,7 +77,7 @@ $DB = new DB() ; ?>
             <!--      Wizard container        -->
             <div class="wizard-container">
 
-                <div class="card wizard-card" data-color="orange" id="wizardProfile">
+                <div class="card wizard-card" data-color="azzure" id="wizardProfile">
                     <form action="form_next.php" method="post">
                 <!--        You can switch ' data-color="orange" '  with one of the next bright colors: "blue", "green", "orange", "red"          -->
 
@@ -112,12 +112,11 @@ $DB = new DB() ; ?>
                                     <div class="form-group">
                                         <label>Age <small>(Obligatoire)</small></label>
                                         <select class="form-control" name = "age" >
-                                            <?php
+                                        <?php
                                                 $annee = date("Y") ;
-                                                echo $annee ;
                                                 $arret = $annee - 18 ;
-                                                for($i = 1970 ; $i <= $arret ; $i++ ) : ?>
-                                                <option> <?=$i?> </option>
+                                                for($i = 1945 ; $i <= $arret ; $i++ ) : $r=$annee;?>
+                                                <option value="<?= $r-$i;?>"> <?= $r-$i .' ans';?> </option>
                                                 <?php endfor ?>
                                         </select>
                                     </div>

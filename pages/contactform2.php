@@ -1,4 +1,36 @@
-
+<?php 
+session_start() ;
+if(isset($_POST["envoyer"])) {
+  require "../db.class.php" ;
+  $DB = new DB() ;
+  $numero_demande = (int)$_POST['numero_demande'] ;
+  $requete_prepare_maj = $DB->prepare("UPDATE demande,paiement pa,date_demande dd,category_demande cd,demandeur pe,document do SET fk_idcategory_demande = 2
+  WHERE demande.iddemande = $numero_demande
+  AND demande.fk_idpaiement = pa.idpaiement
+  AND demande.fk_iddate = dd.iddate_demande
+  AND demande.fk_idcategory_demande = cd.idcategory_demande
+  AND demande.fk_iddemandeur = pe.iddemandeur
+  AND demande.fk_iddocument = do.iddocument ") ;
+  $requete_prepare_maj->execute() ;
+  $new = 'maj' ;
+    header("location:inbox2.php?id=".$new) ;
+}
+if(isset($_POST["terminer"])){
+  require "../db.class.php" ;
+  $DB = new DB() ;
+  $numero_demande = (int)$_POST['numero_demande'] ;
+  $requete_prepare_maj = $DB->prepare("UPDATE demande,paiement pa,date_demande dd,category_demande cd,demandeur pe,document do SET fk_idcategory_demande = 3
+  WHERE demande.iddemande = $numero_demande
+  AND demande.fk_idpaiement = pa.idpaiement
+  AND demande.fk_iddate = dd.iddate_demande
+  AND demande.fk_idcategory_demande = cd.idcategory_demande
+  AND demande.fk_iddemandeur = pe.iddemandeur
+  AND demande.fk_iddocument = do.iddocument ") ;
+  $requete_prepare_maj->execute() ;
+  $new = 'terminé' ;
+    header("location:inbox3.php?id=".$new) ;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -43,7 +75,7 @@
         <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
       </div>
       <!--logo start-->
-      <a href="index.html" class="logo"><b>moha<span>konte</span></b></a>
+      <a href="../index.html" class="logo"><b>Etat<span>Civil</span> DE <span> <?=$_SESSION["etat_civil"]?></span></b></a>
       <!--logo end-->
       <div class="nav notify-row" id="top_menu">
         <!--  notification start -->
@@ -251,7 +283,7 @@
     <!--main content start-->
     <section id="main-content2">
       <section class="wrapper">
-        <h3><i class="fa fa-angle-right"></i> Detail de la demande </h3>
+        <h3><i class="fa fa-angle-right"></i> Detail de la demande N°<?=$_POST['numero_demande']?> </h3>
         <!-- BASIC FORM ELELEMNTS -->
         <div class="row mt">
           <div class="col-lg-6 col-md-6 col-sm-6" >
@@ -263,35 +295,40 @@
                           <table class="table">
                               <thead>
                               <tr>
-                                  <th>prenom </th>
-                                  <th>Mohamed</th>
+                                  <th>Prenom</th>
+                                  <th><?=$_POST["firstname"]?></th>
                               </tr>
                               </thead>
                               <tbody>
                               <tr>
                                   <td>Nom</td>
-                                  <td>Konte</td>
+                                  <td><?=$_POST["lastname"]?></td>
                               
                               </tr>
                               <tr>
                                   <td>Age</td>
-                                  <td>23
+                                  <td>                      
+                                    <?php
+                                        $annee_enregistrement = date("Y") ;
+                                        $age = $annee_enregistrement - $_POST["age"] ;
+                                        $_POST['age'] = $age ;
+                                        echo $age ;
+                                    ?>
                                   </td>
                                   
                               </tr>
                               <tr>
                                   <td>telephone</td>
-                                  <td>782567965</td>
+                                  <td><?=$_POST["numero_telephone"]?></td>
                               </tr>
                               <tr>
                                   <td>Adresse</td>
-                                  <td>Keur Massar</td>
+                                  <td><?=$_POST["adresse"]?></td>
                                   
                               </tr>
                               <tr>
                                   <td>Email</td>
-                                  <td>mohakonte2011@hotmail.com</td>
-                              </tr>
+                                  <td><?=$_POST["email"]?>
                               </tbody>
                           </table>
                       </div>      
@@ -309,32 +346,32 @@
                               <thead>
                               <tr>
                                   <th>Etat civil de </th>
-                                  <th>Dakar</th>
+                                  <th><?=$_POST["etat_civil"]?></th>
                               </tr>
                               </thead>
                               <tbody>
                               <tr>
                                   <td>Document</td>
-                                  <td>Extrait de naissance</td>
+                                  <td><?=$_POST["document"]?></td>
                               
                               </tr>
                               <tr>
-                                  <td> CNI :/td>
-                                  <td>1234567891234</td>
+                                  <td>Numero de registre</td>
+                                  <td><?=$_POST["numero_registre"]?></td>
                                   
                               </tr>
                               <tr>
                                   <td>Anne d'neregistrement</td>
-                                  <td>1996</td>
+                                  <td><?=$_POST["annee_enregistrement"]?></td>
                               </tr>
                               <tr>
                                   <td>Nombre de copie</td>
-                                  <td>5</td>
+                                  <td><?=$_POST["nombre_copie"]?></td>
                                   
                               </tr>
                               <tr>
                                   <td>Montant a payer</td>
-                                  <td>2500</td>
+                                  <td><?=500*$_POST["nombre_copie"]?></td>
                               </tr>
                               </tbody>
                           </table>
@@ -343,20 +380,20 @@
               </div>
           </div>
           <div class="col-lg-12 col-md-6 col-sm-6">
-          <form class="contact-form php-mail-form" role="form" action="contactform/contactform.php" method="POST">
+          <form  action="contactform2.php" method="post">
             <div class="form-group">
-              <textarea class="form-control" name="message" id="contact-message" placeholder="Message... " rows="5" data-rule="required" data-msg="Please write something for us" ></textarea>
+              <textarea class="form-control" name="message" id="contact-message" placeholder="Message..." rows="5" data-rule="required" data-msg="Please write something for us" ></textarea>
               <div class="validate"></div>
             </div>
-            
-            <div class="loading"></div>
-            <div class="error-message"></div>
-            <div class="sent-message">Your message has been sent. Thank you!</div>
-            <div class="form-send">
-              <button type="submit" class="btn btn-large btn-primary">Mettre a jour</button>
-            </div>
+              <input type="hidden" name = "numero_demande" value="<?=$_POST['numero_demande']?>">
+              <button type="submit" name ="envoyer" value = "envoyer" class="btn btn-large btn-primary">Mettre a jour</button>
           </form>
-        </div>
+          </div>
+          <div class="col-lg-12 col-md-6 col-sm-6">
+            <form  action="contactform2.php" method="post">
+              <input type="hidden" name = "numero_demande" value="<?=$_POST['numero_demande']?>">
+              <button type="submit" name ="terminer" value = "terminer" class="btn btn-large btn-primary pull-right">Mettre fin a la demande</button>
+            </form>
         </div>
         
         <!-- /row -->
@@ -372,18 +409,17 @@
     <footer class="site-footer">
       <div class="text-center">
         <p>
-          &copy; Copyrights <strong>Dashio</strong>. All Rights Reserved
+          &copy; Copyrights <strong>EstimGroup</strong>. All Rights Reserved
         </p>
         <div class="credits">
-          <!--
-            You are NOT allowed to delete the credit link to TemplateMag with free version.
-            You can delete the credit link only if you bought the pro version.
-            Buy the pro version with working PHP/AJAX contact form: https://templatemag.com/dashio-bootstrap-admin-template/
-            Licensing information: https://templatemag.com/license/
-          -->
-          Created with Dashio template by <a href="https://templatemag.com/">TemplateMag</a>
-        </div>
-        <a href="form_component.html#" class="go-top">
+                    <!--
+              You are NOT allowed to delete the credit link to TemplateMag with free version.
+              You can delete the credit link only if you bought the pro version.
+              Buy the pro version with working PHP/AJAX contact form: https://templatemag.com/dashio-bootstrap-admin-template/
+              Licensing information: https://templatemag.com/license/-->
+                    Developpe par <a href="https://templatemag.com/">ESTIM Groupe2</a>
+                </div>
+        <a href="inbox.html#" class="go-top">
           <i class="fa fa-angle-up"></i>
           </a>
       </div>

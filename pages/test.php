@@ -17,6 +17,12 @@ echo $date_complet ;
 
 // Test insertion 
 
+		SELECT * FROM document as dc, type_document as td, etat_civil as ec  
+        WHERE dc.fk_idtype_document = td.idtype_document
+        AND td.libelle_type_document = "certficat mariage" 
+        AND ec.idetat_civil=dc.fk_idetat_civil_document
+        AND ec.libelle_etat_civil = 'dakar' ;
+
 
 
 

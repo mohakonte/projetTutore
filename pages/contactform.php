@@ -1,4 +1,5 @@
 <?php
+session_start() ;
 if(isset($_POST["envoyer"])) {
   require "../db.class.php" ;
   $DB = new DB() ;
@@ -11,8 +12,7 @@ if(isset($_POST["envoyer"])) {
   AND demande.fk_iddemandeur = pe.iddemandeur
   AND demande.fk_iddocument = do.iddocument ") ;
   $requete_prepare_maj->execute() ;
-  $new = 'en_cours' ;
-    header("location:inbox2.php?id=".$new) ;
+    header("location:inbox2.php?id="."en_cours") ;
 }
 ?>
 <!DOCTYPE html>
@@ -59,7 +59,7 @@ if(isset($_POST["envoyer"])) {
         <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
       </div>
       <!--logo start-->
-      <a href="index.html" class="logo"><b>moha<span>konte</span></b></a>
+      <a href="../index.html" class="logo"><b>Etat<span>Civil</span> DE <span> <?=$_SESSION["etat_civil"]?></span></b></a>
       <!--logo end-->
       <div class="nav notify-row" id="top_menu">
         <!--  notification start -->
@@ -292,12 +292,7 @@ if(isset($_POST["envoyer"])) {
                               <tr>
                                   <td>Age</td>
                                   <td>                      
-                                    <?php
-                                        $annee_enregistrement = date("Y") ;
-                                        $age = $annee_enregistrement - $_POST["age"] ;
-                                        $_POST['age'] = $age ;
-                                        echo $age ;
-                                    ?>
+                                        <?=$_POST["age"]?> ans
                                   </td>
                                   
                               </tr>
@@ -389,18 +384,17 @@ if(isset($_POST["envoyer"])) {
     <footer class="site-footer">
       <div class="text-center">
         <p>
-          &copy; Copyrights <strong>Dashio</strong>. All Rights Reserved
+          &copy; Copyrights <strong>EstimGroup</strong>. All Rights Reserved
         </p>
         <div class="credits">
-          <!--
-            You are NOT allowed to delete the credit link to TemplateMag with free version.
-            You can delete the credit link only if you bought the pro version.
-            Buy the pro version with working PHP/AJAX contact form: https://templatemag.com/dashio-bootstrap-admin-template/
-            Licensing information: https://templatemag.com/license/
-          -->
-          Created with Dashio template by <a href="https://templatemag.com/">TemplateMag</a>
-        </div>
-        <a href="form_component.html#" class="go-top">
+                    <!--
+              You are NOT allowed to delete the credit link to TemplateMag with free version.
+              You can delete the credit link only if you bought the pro version.
+              Buy the pro version with working PHP/AJAX contact form: https://templatemag.com/dashio-bootstrap-admin-template/
+              Licensing information: https://templatemag.com/license/-->
+                    Developpe par <a href="https://templatemag.com/">ESTIM Groupe2</a>
+                </div>
+        <a href="inbox.html#" class="go-top">
           <i class="fa fa-angle-up"></i>
           </a>
       </div>

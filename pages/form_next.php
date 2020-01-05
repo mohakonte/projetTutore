@@ -1,6 +1,13 @@
 
 <?php
 session_start() ;
+if((isset($_SESSION["cas"])) && ($_SESSION["cas"] == "naissance")){
+    $docuemnt = "extrait naissance" ;
+} elseif((isset($_SESSION["cas"])) && ($_SESSION["cas"] == "mariage")){
+    $docuemnt = "certificat mariage" ;
+} elseif((isset($_SESSION["cas"])) && ($_SESSION["cas"] == "mariage")){
+    $docuemnt = "certificat mariage" ;
+} else {$docuemnt = "extrait naissance" ;}
 require "../db.class.php" ;
 $DB = new DB() ;
 $erreur = false ;
@@ -40,10 +47,11 @@ if(isset($_POST["terminer"])) {
     }elseif(!empty($_POST["numero_registre"]) && !empty($_POST["annee_enregistrement"]) && $_SESSION["document"]=="certificat mariage"){
         $etat_civil = $_SESSION["etat_civil"] ;
         $document = $_SESSION["document"] ;
-        $requete_document_prepare = $DB->prepare("SELECT * FROM doc_etat_civil as dc, type_doc_etat_civil as td, etat_civil as ec  
-        WHERE dc.fk_idtype_doc = td.idtype_doc 
-        AND td.libelle_doc = '$document' 
-        AND ec.idetat_civil=dc.fk_idetat_civil
+        echo "ici";
+        $requete_document_prepare = $DB->prepare("SELECT * FROM document as dc, type_document as td, etat_civil as ec  
+        WHERE dc.fk_idtype_document = td.idtype_document
+        AND td.libelle_type_document = '$document' 
+        AND ec.idetat_civil=dc.fk_idetat_civil_document
         AND ec.libelle_etat_civil = '$etat_civil'") ;
         $requete_document_prepare->execute() ;
         $documents = $DB->fetchallobject($requete_document_prepare) ;
@@ -51,10 +59,12 @@ if(isset($_POST["terminer"])) {
             $numero_registre = $document->numero_registre ;
             $annee_enregistrement = $document->annee_enregistrement ;
             $cni = $document->cni ;
+            
             if($numero_registre == $_POST["numero_registre"] && $annee_enregistrement == $_POST["annee_enregistrement"]) {
                 $_SESSION["numero_registre"] = $_POST["numero_registre"];
                 $_SESSION["annee_enregistrement"] = $_POST["annee_enregistrement"] ;
                 $_SESSION['correcte'] = "certificat mariage" ;
+                
                 header("location:correcte.php") ;
             } else{$erreur = true ;}
         }
@@ -157,7 +167,7 @@ if(isset($_POST["terminer"])) {
             <!--      Wizard container        -->
             <div class="wizard-container">
 
-                <div class="card wizard-card" data-color="orange" id="wizardProfile">
+                <div class="card wizard-card" data-color="azzure" id="wizardProfile">
                     <form action="" method="post">
                 <!--        You can switch ' data-color="orange" '  with one of the next bright colors: "blue", "green", "orange", "red"          -->
 

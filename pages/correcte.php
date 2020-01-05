@@ -117,12 +117,8 @@
                                                     </tr>
                                                     <tr>
                                                         <td>Age</td>
-                                                        <td><?php
-                                                                $annee_enregistrement = date("Y") ;
-                                                                $age = $annee_enregistrement - $_SESSION["age"] ;
-                                                                $_SESSION['age'] = $age ;
-                                                                echo $age ;
-                                                            ?>
+                                                        <td>
+                                                               <?=$_SESSION['age']?> ans
                                                         </td>
                                                         
                                                     </tr>
@@ -186,7 +182,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td>Montant a payer</td>
-                                                        <td><?=500*$_SESSION["nombre_copie"]?>FCFA</td>
+                                                        <td><?=500*$_SESSION["nombre_copie"]?> FCFA</td>
                                                     </tr>
                                                     </tbody>
                                                 </table>
