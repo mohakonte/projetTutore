@@ -7,7 +7,7 @@ $DB = new DB() ;
 $requete_prepare_admin=$DB->prepare("SELECT *
     FROM admin ad, etat_civil ec 
     WHERE ad.fk_idetat_civil_admin = ec.idetat_civil
-    AND ec.libelle_etat_civil = 'pikine'") ;
+    AND ec.libelle_etat_civil = '$etat_civil' ") ;
 $requete_prepare_admin->execute() ;
 $admins = $DB->fetchallobject($requete_prepare_admin) ;
 ?>
@@ -179,26 +179,29 @@ $admins = $DB->fetchallobject($requete_prepare_admin) ;
                     $etat_civil = $admin->libelle_etat_civil ;
                     
                     ?>
-                        <form action= "contactform3.php" method ="post">
                         
                             <tr class="">
-                            <td class="inbox-small-cells">
-                            <?=$numero_admin?>
-                            </td>
-                            <td class="view-message  dont-show"><?=$prenom." ".$nom?></a></td>
-                            <td class="view-message dont-show"><?=$login?></a></td>
-                            <td class="view-message "><?=$numero_telephone?> </a></td>
-                            <td class="view-message  text-right"><?=$adresse?></td>
-                            <input type="hidden" name="numero_admin" value=<?=$numero_admin?>>
-                            <input type="hidden" name="firstname" value=<?=$prenom?>>
-                            <input type="hidden" name="lastname" value=<?=$nom?>>
-                            <input type="hidden" name="etat_civil" value=<?=$etat_civil?>>
-                            <input type="hidden" name="adresse" value=<?=$adresse?>>
-                            <input type="hidden" name="email" value=<?=$email?>>
-                            <td class="view-message dont-show"><button type="submit" class="btn btn-primary pull-right"> VOIR DETAIL</button></td>
+                              <td class="inbox-small-cells">
+                              <?=$numero_admin?>
+                              </td>
+                              <td class="view-message  dont-show"><?=$prenom." ".$nom?></a></td>
+                              <td class="view-message dont-show"><?=$login?></a></td>
+                              <td class="view-message "><?=$numero_telephone?> </a></td>
+                              <td class="view-message  text-right"><?=$adresse?></td>
+                              <input type="hidden" name="numero_admin" value=<?=$numero_admin?>>
+                              <input type="hidden" name="firstname" value=<?=$prenom?>>
+                              <input type="hidden" name="lastname" value=<?=$nom?>>
+                              <input type="hidden" name="etat_civil" value=<?=$etat_civil?>>
+                              <input type="hidden" name="adresse" value=<?=$adresse?>>
+                              <input type="hidden" name="email" value=<?=$email?>>
+                              <td class="view-message dont-show">
+                                <button type="submit" class="btn btn-danger pull-right">
+                                  <a  href="supprimer.php?numero_admin=<?=$numero_admin?>">Supprimer </a>
+                                </button>
+                              </td>
                             </tr>
                         </tbody>
-                        </form>
+                        
                   <?php endforeach ; ?>
 
                   </table>
