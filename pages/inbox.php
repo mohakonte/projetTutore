@@ -20,6 +20,7 @@ $_SESSION["document"] = "certificat deces" ;
 $_SESSION["titre"] = "Traitement des demande de certificat de deces" ;
 }
 $document = $_SESSION["document"] ;
+$etat_civil = $_SESSION['etat_civil'] ;
 $titre = $_SESSION["titre"] ;
 
 require "../db.class.php" ;
@@ -36,7 +37,8 @@ $requete_prepare_demande=$DB->prepare("SELECT *
     AND td.idtype_document = do.fk_idtype_document
     AND ec.idetat_civil = do.fk_idetat_civil_document
     AND cd.libelle_category='a_traiter'
-    AND td.libelle_type_document = '$document'") ;
+    AND td.libelle_type_document = '$document'
+    AND ec.libelle_etat_civil = '$etat_civil' ") ;
 $requete_prepare_demande->execute() ;
 $demandes = $DB->fetchallobject($requete_prepare_demande) ;
 $requete_a_traitee_prepare= $DB->prepare("SELECT COUNT(iddemande) as nombre
@@ -51,7 +53,8 @@ WHERE pe.iddemandeur = de.fk_iddemandeur
     AND td.idtype_document = do.fk_idtype_document
     AND ec.idetat_civil = do.fk_idetat_civil_document
     AND cd.libelle_category='a_traiter'
-    AND td.libelle_type_document = '$document'") ;
+    AND td.libelle_type_document = '$document'
+    AND ec.libelle_etat_civil = '$etat_civil' ") ;
 $requete_a_traitee_prepare->execute() ;
 $a_traitees = $DB->fetchallobject($requete_a_traitee_prepare) ;
 foreach($a_traitees as $a_traitee) {
@@ -69,7 +72,8 @@ WHERE pe.iddemandeur = de.fk_iddemandeur
     AND td.idtype_document = do.fk_idtype_document
     AND ec.idetat_civil = do.fk_idetat_civil_document
     AND cd.libelle_category='en_cours'
-    AND td.libelle_type_document = '$document'") ;
+    AND td.libelle_type_document = '$document'
+    AND ec.libelle_etat_civil = '$etat_civil' ") ;
 $requete_en_cours_prepare->execute() ;
 $en_courss = $DB->fetchallobject($requete_en_cours_prepare) ;
 foreach($en_courss as $en_cours) {
@@ -87,7 +91,8 @@ WHERE pe.iddemandeur = de.fk_iddemandeur
     AND td.idtype_document = do.fk_idtype_document
     AND ec.idetat_civil = do.fk_idetat_civil_document
     AND cd.libelle_category='terminer'
-    AND td.libelle_type_document = '$document'") ;
+    AND td.libelle_type_document = '$document'
+    AND ec.libelle_etat_civil = '$etat_civil' ") ;
 $requete_a_terminer_prepare->execute() ;
 $a_terminers = $DB->fetchallobject($requete_a_terminer_prepare) ;
 foreach($a_terminers as $a_terminer) {
