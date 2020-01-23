@@ -3,7 +3,10 @@ session_start() ;
 require('../db.class.php');
 $DB=new DB;
 //--------(Debut)------Declaration et Affichage de la variable $_SESSION['message']-----------------------
-echo $_SESSION['message'];
+if(isset($_SESSION['message'])){
+    echo $_SESSION['message'];
+}
+
 $_SESSION['message']="";
 //--------(Fin)------Declaration et Affichage de la variable $_SESSION['message']-----------------------
 
