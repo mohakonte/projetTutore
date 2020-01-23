@@ -21,7 +21,6 @@ if(isset($_POST["terminer"])) {
         $numero_telephone = $paiement->numero_telephone ;
         $valide = $paiement->valide ;
         if($code_confirmation == $_POST["code"] && $numero_telephone == $_POST["numero_telephone"] && $valide =='TRUE' ){
-            $validation == true ;
             // ---------------------------------INSERTION DEDAMNDEUR--------------------------------------------
             //INSERTION
             $requete_insert_demandeur=$DB->prepare("INSERT INTO demandeur(prenom,nom,age,telephone,adresse,email) VALUES(:prenom,:nom,:age,:telephone,:adresse,:email)") ;
@@ -143,8 +142,11 @@ if(isset($_POST["terminer"])) {
 
             )) ;
             //-------------------------------------------FIN INSERTION DES DONNEE---------------------------------------------------------
-            // c'est a cette endroit qu'on va stocker les donnee dans la base puis rediriger vers validation.php
-            // travail en cours...
+            // Update du code de validation de TRUE en FALSE (pour ne plus etre reutiliser une deuxieme fois)
+            $requete_prepare_update_code = $DB->prepare("UPDATE confirmation_paiement 
+                SET valide = 'FALSE' 
+                WHERE code_confirmation = '$code_confirmation'") ;
+            $requete_prepare_update_code->execute() ;
              
          header("location:validation.php") ;
         }
